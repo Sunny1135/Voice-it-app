@@ -1,85 +1,147 @@
-var SpeechRecognition=window.webkitSpeechRecognition;
-var x= document.getElementById("myAudiomemo");
-var recognition=new SpeechRecognition();
-function start()
-{
-    document.getElementById("textbox").innerHTML="";
-    recognition.start();
-}
-recognition.onresult=function(event){
-console.log(event);
-var Content =event.results[0][0].transcript;
-console.log(Content);
-document.getElementById("textbox").innerHTML=Content;
-console.log(Content);
-if(Content=="take my selfie")
-{
-console.log("taking selfie---");
-speak();
-}
-if(Content=="play"){
-    x.play();
+var SpeechRecognition = window.webkitSpeechRecognition;
+var recognition1 = new SpeechRecognition();
+var audioContext = "";
+var microphone;
+
+function startListening() {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(function(stream) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext);
+            microphone = audioContext.createMediaStreamSource(stream);
+            var analyser = audioContext.createAnalyser();
+            microphone.connect(analyser);
+            recognition1.start();
+           
+        })
+        .catch(function(err) {
+            console.error("Error accessing the microphone: " + err);
+        });
 }
 
-if(Content=="chat")
-{
-    window.location="https://mahdihat791.github.io/v2/kwitter/index.html";
-}
-if(Content=="question")
-{
-ask=document.getElementById("ask").value;
-var link="https://www.google.com/search?q="+ask;
-window.location=link;
-}
-if(Content=="moving")
-{
-window.location="https://scratch.mit.edu/projects/652384703/";
-}
-if(Content=="happy")
-{
-window.location="https://x.thunkable.com/projectPage/615c34092ad1d7001149c32a";
-}
-if(Content=="weather")
-{
-    window.location="https://x.thunkable.com/projectPage/61bda8dfbba801001249c139";
-}
-}
+function getAverageVolume(array) {
+    var values = 0;
+    var average;
 
-function speak()
-{
-var synth=window.speechSynthesis;
-speak_data="taking your selfie in 10 seconds";
-var utterThis=new SpeechSynthesisUtterance(speak_data);
-synth.speak(utterThis);
-Webcam.attach(camera);
-setTimeout(function()
-{
-take_snapshot();
-save()  ;
-},10000);
+    for (var i = 0; i < array.length; i++) {
+        values += array[i];
+    }
+
+    average = values / array.length;
+    return average;
 }
-camera=document.getElementById("camera");
-Webcam.set({
-width:360,
-height:250,
-image_format:'jpeg',
-jpeg_quality:90
-});
-function take_snapshot()
-{
-Webcam.snap(function(data_uri)
-{
-document.getElementById("result").innerHTML="<img id='selfie_image' src='"+data_uri+"'>";
-});
-}
-function save()
-{
-link=document.getElementById("link");
-image=document.getElementById("selfie_image").src;
-link.href=image;
-link.click();
-}
-function soundmemo()
-{
-x.play();
-}
+        recognition1.onresult=function(event){
+        console.log(event);
+        var Content =event.results[0][0].transcript;
+        console.log(Content);
+        document.getElementById("textbox").innerHTML=Content;
+        console.log(Content);
+        if(Content=="take my selfie")
+        {
+        console.log("taking selfie---");
+        speak();
+        }
+        if(Content.includes('play')){
+        var play=Content.replace("play","").trim();
+        var allAudio = document.querySelectorAll('audio'); // Assuming all audio elements are on the page
+  allAudio.forEach(function(audio) {
+    audio.pause();
+  });
+        if(play=='legends never die'){
+          var a=document.getElementById("myAudiomemolng");
+        a.play();
+       
+            }
+        if(play=='believer'){
+        var b=document.getElementById("myAudiomemobeliever");
+        b.play();
+        }
+        if(play=='bones'){
+            var c=document.getElementById("myAudiomemobones");
+        c.play();
+        }
+        if(play=='enemy'){
+            var d=document.getElementById("myAudiomemoenemy");
+        d.play();
+        }
+        if(play=='Fly Away'){
+            var e=document.getElementById("myAudiomemofly");
+        e.play();
+        }
+      if(play=='Other Side'){
+        var f=document.getElementById("myAudiomemoother");
+         f.play();
+        }
+        if(play=='Spectre'){
+            var g=document.getElementById("myAudiomemospec");
+        g.play();
+        }
+        if(play=='faded'){
+            var h=document.getElementById("myAudiomemofade");
+        h.play();
+        } 
+        if(play=='girls like you'){
+            var i=document.getElementById("myAudiomemogirl");
+        i.play();
+        }        
+        }
+        
+        if(Content=="chat")
+        {
+            window.location="https://mahdihat791.github.io/v2/kwitter/index.html";
+        }
+        
+        if (Content.includes('question'))
+        {
+        
+         ask=Content.replace("question", "");
+        var link="https://www.google.com/search?q="+ask;
+        window.location=link;
+        }
+        if (Content.includes('how to'))
+        {
+        
+         ask=Content.replace("how to", "");
+        var link2="https://www.wikihow.com/wikiHowTo?search="+ask;
+        window.location=link2;
+        }
+        
+  
+       
+        }
+        
+        function speak()
+        {
+        var synth=window.speechSynthesis;
+        speak_data="taking your selfie in 5 seconds";
+        var utterThis=new SpeechSynthesisUtterance(speak_data);
+        synth.speak(utterThis);
+        Webcam.attach(camera);
+        setTimeout(function()
+        {
+        take_snapshot();
+        save()  ;
+        },5000);
+        }
+        camera=document.getElementById("camera");
+        Webcam.set({
+        width:360,
+        height:360,
+        image_format:'jpeg',
+        jpeg_quality:100
+        });
+        function take_snapshot()
+        {
+        Webcam.snap(function(data_uri)
+        {
+        document.getElementById("result").innerHTML="<img id='selfie_image' src='"+data_uri+"'>";
+        });
+        }
+        function save()
+        {
+        link=document.getElementById("link");
+        image=document.getElementById("selfie_image").src;
+        link.href=image;
+        link.click();
+        }
+       
+
